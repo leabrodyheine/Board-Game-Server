@@ -28,3 +28,5 @@ Enter the URL of the server and the seed here: https://stacs5001.github.io/p2-cl
 - The game progresses through player actions, to safely navigate animals across the board.
 
 **The UI of the game was built by the professors and the concept of the game was constructed by ChatGPT and Module Professors**
+
+**Grade: First (19 or 95%) UK Grading Scale**
