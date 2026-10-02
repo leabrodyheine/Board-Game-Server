@@ -1,32 +1,31 @@
-# Strategy Board Game Server
+# Woodland Strategy Game Server
 
-## Overview
-This project is a server for a strategy board game, implemented in Java. It involves managing game logic and player interactions in a virtual game environment.
+A completed Java server for a turn-based strategy board game. The server creates a deterministic 20×20 woodland from a supplied random seed, accepts client commands over a socket, updates the game state, and responds with JSON.
 
-## Features
-- **Board Gameplay**: Implementing game logic for board movements.
-- **Server Functionality**: Handling player requests and game state updates.
-- **JSON Communication**: Utilizing JSON for sending and receiving game data.
+## Game model
 
-## How to Run and Play
-### Running the Server
-Pick a seed and run the program. 
+Players guide animals with different movement abilities across a board populated by stationary mythical creatures and collectible spells. The implementation includes:
 
-### Connecting to the Game
-Enter the URL of the server and the seed here: https://stacs5001.github.io/p2-client/ (you may not be able to access this if you are not a student, but you can see the demo game and server built by the professors)
+- Five animal types with movement-specific behavior
+- Creatures with distinct attack values
+- Healing and information-revealing spells
+- Seeded board generation
+- JSON request/response handling for a remote client
 
-### Gameplay Overview
-- **Objective**: Guide animals across a board while avoiding mythical creatures.
-- **Board**: 20x20 grid with various creatures and spells placed randomly on the board before any turns are taken.
-- **Animals**: Each with unique movement abilities.
-- **Mythical Creatures**: Stationary with different attack values.
-- **Spells**: Provide abilities like healing or revealing adjacent creatures.
+## Build and run
 
-### Turns and Actions
-- Players take turns moving animals and using spells.
-- Animal movement and spell usage are based on specific rules.
-- The game progresses through player actions, to safely navigate animals across the board.
+Prerequisite: a JDK and the included `javax.json-1.0.jar`.
 
-**The UI of the game was built by the professors and the concept of the game was constructed by ChatGPT and Module Professors**
+```bash
+cd src
+javac -cp "javax.json-1.0.jar" GameServerMain.java woodland/**/*.java
+java -cp ".:javax.json-1.0.jar" GameServerMain 8080 42
+```
 
-**Grade: First (19 or 95%) UK Grading Scale**
+The two arguments are the listening port and board seed. On Windows, replace the classpath separator `:` with `;`.
+
+A compatible course client was published at <https://stacs5001.github.io/p2-client/>; availability and access are controlled by the course maintainers.
+
+## Project status
+
+This repository contains the completed server-side assignment. The separate browser client and the original game specification are not maintained here.
