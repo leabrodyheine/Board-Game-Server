@@ -99,13 +99,13 @@ public class GameServer {
 
             Animal specAnimal = game.getAnimals().get(animalIndex);
             Square currentSquare = specAnimal.getSquare();
-            int currrentRow = currentSquare.getRow();
+            int currentRow = currentSquare.getRow();
             int currentCol = currentSquare.getCol();
 
             String currentAnimal = this.game.getCurrentAnimalName();
 
             if (specAnimal.getName().equals(currentAnimal) && turnType.equals("move")
-                    && specAnimal.move(currrentRow, currentCol, row, col)) {
+                    && specAnimal.move(currentRow, currentCol, row, col)) {
                 game.setStatus("The last move was successful.");
                 game.thisTurn = true;
                 if (action.equals("move")) {
@@ -114,8 +114,8 @@ public class GameServer {
                 return true;
             } else if (specAnimal.getName()
                     .equals(game.getAnimals().get((game.currentAnimalIndex + one) % five).getName())
-                    && specAnimal.move(currrentRow, currentCol, row, col)) {
-                specAnimal.move(currrentRow, currentCol, row, col);
+                    && specAnimal.move(currentRow, currentCol, row, col)) {
+                specAnimal.move(currentRow, currentCol, row, col);
                 game.setStatus("The last move was successful.");
                 game.nextTurn = true;
                 this.game.attackAnimal();
@@ -129,7 +129,7 @@ public class GameServer {
                             .equals(game.getAnimals().get((game.currentAnimalIndex + one) % five).getName().trim())) {
                 game.setStatus("The last move was invalid.");
                 return false;
-            } else if (!specAnimal.move(currrentRow, currentCol, row, col)) {
+            } else if (!specAnimal.move(currentRow, currentCol, row, col)) {
                 game.setStatus("The last move was invalid.");
                 return false;
             } else {
@@ -208,7 +208,7 @@ public class GameServer {
             if (line == "" || line == null) {
                 return;
             }
-            String[] first_line = line.split(" ");
+            String[] requestLineParts = line.split(" ");
 
             // read header
             while (!line.isEmpty()) {
@@ -227,26 +227,26 @@ public class GameServer {
                 body = new String(bodyChars);
             }
 
-            if (first_line[zero].equals("OPTIONS")) {
+            if (requestLineParts[zero].equals("OPTIONS")) {
                 String headers = stringHeaders(out, twohundred, zero);
                 out.print(headers);
                 return;
 
-            } else if (first_line[zero].equals("GET")) {
-                if (first_line[one].equals("/")) {
+            } else if (requestLineParts[zero].equals("GET")) {
+                if (requestLineParts[one].equals("/")) {
                     String responseBody = "{\"status\": \"ok\"}";
                     String headers = stringHeaders(out, twohundred, responseBody.length());
                     out.print(headers + responseBody);
 
-                } else if (first_line[one].equals("/game") || first_line[one].equals("/game/debug")) {
+                } else if (requestLineParts[one].equals("/game") || requestLineParts[one].equals("/game/debug")) {
                     String responseBody = getGameStateAsJson().toString();
                     String headers = stringHeaders(out, twohundred, responseBody.length());
                     out.print(headers + responseBody);
 
                 }
 
-            } else if (first_line[zero].equals("POST")) {
-                if (first_line[one].equals("/game")) {
+            } else if (requestLineParts[zero].equals("POST")) {
+                if (requestLineParts[one].equals("/game")) {
                     try (JsonReader jsonReader = Json.createReader(new StringReader(body))) {
                         JsonObject jsonObject = jsonReader.readObject();
                         String actionType = jsonObject.getString("action");
@@ -275,7 +275,7 @@ public class GameServer {
                             out.flush();
                         }
                     }
-                } else if (first_line[one].equals("/reset")) {
+                } else if (requestLineParts[one].equals("/reset")) {
                     this.game = new Game(seed);
                     turnType = "move";
                     String responseBody = getGameStateAsJson().toString();
