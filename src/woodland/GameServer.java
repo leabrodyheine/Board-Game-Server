@@ -69,10 +69,10 @@ public class GameServer {
      * This method is presumably used to control the flow of the game based on the
      * turn type.
      * 
-     * @param string The description of the current turn type.
+     * @param turnType The description of the current turn type.
      */
-    public void setTurnType(String string) {
-        this.turnType = string;
+    public void setTurnType(String turnType) {
+        this.turnType = turnType;
     }
 
     /**
@@ -322,11 +322,11 @@ public class GameServer {
      * animal's index is
      * essential for processing game actions related to that specific animal.
      *
-     * @param JSONString The JSON string that contains the animal information.
+     * @param jsonString The JSON string that contains the animal information.
      * @return The index of the animal if found; -1 if the animal does not exist.
      */
-    public int getAnimalIndex(String JSONString) {
-        try (JsonReader jsonReader = Json.createReader(new StringReader(JSONString))) {
+    public int getAnimalIndex(String jsonString) {
+        try (JsonReader jsonReader = Json.createReader(new StringReader(jsonString))) {
             JsonObject jsonObject = jsonReader.readObject();
 
             String animal = jsonObject.getString("animal");

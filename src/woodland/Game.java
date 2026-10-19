@@ -177,10 +177,10 @@ public class Game {
      * of the last action taken, such as an invalid move or the outcome of a game
      * event.
      *
-     * @param string The message that describes the current status of the game.
+     * @param status The message that describes the current status of the game.
      */
-    public void setStatus(String string) {
-        this.status = string;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
