@@ -195,7 +195,7 @@ public class Game {
     public void moveAnimal(Animal animal, int oldRow, int oldCol, int newRow, int newCol) {
         Square destination = board[newRow][newCol];
         if (board[newRow][newCol].hasCreature()) {
-            setStatus("The last move was sucessful");
+            setStatus("The last move was successful.");
             hasMoved = true;
             thisTurn = true;
             nextTurn = false;
