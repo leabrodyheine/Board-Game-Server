@@ -55,7 +55,7 @@ public class Game {
     private int ten = 10;
     private int thirty6 = 36;
     private int twenty9 = 29;
-    private int fourty2 = 42;
+    private int fortyTwo = 42;
     private int twenty1 = 21;
     private int fourteen = 14;
 
@@ -116,7 +116,7 @@ public class Game {
         creatures.add(new UnderAppreciatedUnicorn("Under Appreciated Unicorn", fourteen));
         creatures.add(new ComplicatedCentaur("Complicated Centaur", thirty6));
         creatures.add(new DeceptiveDragon("Deceptive Dragon", twenty9));
-        creatures.add(new PrecociousPhoenix("Precocious Phoenix", fourty2));
+        creatures.add(new PrecociousPhoenix("Precocious Phoenix", fortyTwo));
         creatures.add(new SassySphinx("Sassy Sphinx", twenty1));
 
         for (int i = zero; i < five; i++) {
