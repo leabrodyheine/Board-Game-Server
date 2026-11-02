@@ -31,9 +31,9 @@ public class GameServer {
     private int zero = 0;
     private int one = 1;
     private int five = 5;
-    private int twohundred = 200;
-    private int fourhundred = 400;
-    private int fivehundred = 500;
+    private static final int HTTP_OK = 200;
+    private static final int HTTP_BAD_REQUEST = 400;
+    private static final int HTTP_INTERNAL_SERVER_ERROR = 500;
 
     /**
      * Initializes a game server with the specified port and seed for the game.
@@ -228,19 +228,19 @@ public class GameServer {
             }
 
             if (requestLineParts[zero].equals("OPTIONS")) {
-                String headers = stringHeaders(out, twohundred, zero);
+                String headers = stringHeaders(out, HTTP_OK, zero);
                 out.print(headers);
                 return;
 
             } else if (requestLineParts[zero].equals("GET")) {
                 if (requestLineParts[one].equals("/")) {
                     String responseBody = "{\"status\": \"ok\"}";
-                    String headers = stringHeaders(out, twohundred, responseBody.length());
+                    String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                     out.print(headers + responseBody);
 
                 } else if (requestLineParts[one].equals("/game") || requestLineParts[one].equals("/game/debug")) {
                     String responseBody = getGameStateAsJson().toString();
-                    String headers = stringHeaders(out, twohundred, responseBody.length());
+                    String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                     out.print(headers + responseBody);
 
                 }
@@ -256,13 +256,13 @@ public class GameServer {
                             boolean parseMove = parseMoveAction(body, animalIndex);
                             if (!parseMove) {
                                 String responseBody = getGameStateAsJson().toString();
-                                String headers = stringHeaders(out, twohundred, responseBody.length());
+                                String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                                 out.print(headers + responseBody);
                                 out.flush();
                                 return;
                             } else if (parseMove) {
                                 String responseBody = getGameStateAsJson().toString();
-                                String headers = stringHeaders(out, twohundred, responseBody.length());
+                                String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                                 out.print(headers + responseBody);
                                 out.flush();
                             }
@@ -270,7 +270,7 @@ public class GameServer {
                         } else if (actionType.equals("spell")) {
                             parseSpellAction(body, animalIndex);
                             String responseBody = getGameStateAsJson().toString();
-                            String headers = stringHeaders(out, twohundred, responseBody.length());
+                            String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                             out.print(headers + responseBody);
                             out.flush();
                         }
@@ -279,7 +279,7 @@ public class GameServer {
                     this.game = new Game(seed);
                     turnType = "move";
                     String responseBody = getGameStateAsJson().toString();
-                    String headers = stringHeaders(out, twohundred, responseBody.length());
+                    String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                     out.print(headers + responseBody);
                     out.flush();
                 }
@@ -288,23 +288,23 @@ public class GameServer {
 
         } catch (SocketException e) {
             System.err.println("Socket error: " + e.getMessage());
-            sendError(out, fourhundred, "Socket error");
+            sendError(out, HTTP_BAD_REQUEST, "Socket error");
         } catch (JsonException e) {
             System.err.println("JSON parsing error: " + e.getMessage());
-            sendError(out, fourhundred, "JSON parsing error");
+            sendError(out, HTTP_BAD_REQUEST, "JSON parsing error");
         } catch (NumberFormatException e) {
             System.err.println("Error parsing Content-Length header: " + e.getMessage());
-            sendError(out, fourhundred, "Error parsing Content-Length");
+            sendError(out, HTTP_BAD_REQUEST, "Error parsing Content-Length");
         } catch (ArrayIndexOutOfBoundsException e) {
             System.err.println("Unexpected request format: " + e.getMessage());
-            sendError(out, fourhundred, "Unexpected request format");
+            sendError(out, HTTP_BAD_REQUEST, "Unexpected request format");
         } catch (IOException e) {
             e.printStackTrace();
-            sendError(out, fivehundred, "Internal Server Error");
+            sendError(out, HTTP_INTERNAL_SERVER_ERROR, "Internal Server Error");
         } catch (Exception e) {
             System.err.println("General exception: " + e.getMessage());
             e.printStackTrace();
-            sendError(out, fivehundred, "Internal Server Error");
+            sendError(out, HTTP_INTERNAL_SERVER_ERROR, "Internal Server Error");
         } finally {
             try {
                 if (out != null) {
