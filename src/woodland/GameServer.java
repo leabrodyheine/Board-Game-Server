@@ -97,25 +97,25 @@ public class GameServer {
 
             String action = jsonObject.getString("action");
 
-            Animal specAnimal = game.getAnimals().get(animalIndex);
-            Square currentSquare = specAnimal.getSquare();
+            Animal selectedAnimal = game.getAnimals().get(animalIndex);
+            Square currentSquare = selectedAnimal.getSquare();
             int currentRow = currentSquare.getRow();
             int currentCol = currentSquare.getCol();
 
             String currentAnimal = this.game.getCurrentAnimalName();
 
-            if (specAnimal.getName().equals(currentAnimal) && turnType.equals("move")
-                    && specAnimal.move(currentRow, currentCol, row, col)) {
+            if (selectedAnimal.getName().equals(currentAnimal) && turnType.equals("move")
+                    && selectedAnimal.move(currentRow, currentCol, row, col)) {
                 game.setStatus("The last move was successful.");
                 game.thisTurn = true;
                 if (action.equals("move")) {
                     setTurnType("spell");
                 }
                 return true;
-            } else if (specAnimal.getName()
+            } else if (selectedAnimal.getName()
                     .equals(game.getAnimals().get((game.currentAnimalIndex + one) % five).getName())
-                    && specAnimal.move(currentRow, currentCol, row, col)) {
-                specAnimal.move(currentRow, currentCol, row, col);
+                    && selectedAnimal.move(currentRow, currentCol, row, col)) {
+                selectedAnimal.move(currentRow, currentCol, row, col);
                 game.setStatus("The last move was successful.");
                 game.nextTurn = true;
                 this.game.attackAnimal();
@@ -124,12 +124,12 @@ public class GameServer {
                     setTurnType("spell");
                 }
                 return true;
-            } else if (!specAnimal.getName().equals(currentAnimal)
+            } else if (!selectedAnimal.getName().equals(currentAnimal)
                     || !currentAnimal
                             .equals(game.getAnimals().get((game.currentAnimalIndex + one) % five).getName().trim())) {
                 game.setStatus("The last move was invalid.");
                 return false;
-            } else if (!specAnimal.move(currentRow, currentCol, row, col)) {
+            } else if (!selectedAnimal.move(currentRow, currentCol, row, col)) {
                 game.setStatus("The last move was invalid.");
                 return false;
             } else {
@@ -162,16 +162,16 @@ public class GameServer {
                 setTurnType("move");
             }
 
-            Animal specAnimal = game.getAnimals().get(animalIndex);
+            Animal selectedAnimal = game.getAnimals().get(animalIndex);
             String currentAnimal = jsonObject.getString("animal");
-            if (!specAnimal.getName().equals(currentAnimal)) {
+            if (!selectedAnimal.getName().equals(currentAnimal)) {
                 game.setStatus("The last move was invalid.");
                 return false;
             }
 
-            for (Spell spellObject : specAnimal.getSpells().keySet()) {
+            for (Spell spellObject : selectedAnimal.getSpells().keySet()) {
                 if (spellObject.getName().equals(spell)) {
-                    this.game.castSpell(specAnimal, spellObject);
+                    this.game.castSpell(selectedAnimal, spellObject);
                     game.setStatus("The last spell was successful.");
                     game.currentAnimalUsedSpell = false;
                     game.nextAnimalUsedSpell = false;
@@ -332,8 +332,8 @@ public class GameServer {
             String animal = jsonObject.getString("animal");
 
             for (int i = zero; i < five; i++) {
-                Animal specAnimal = game.animals.get(i);
-                if (specAnimal.getName().equals(animal)) {
+                Animal candidateAnimal = game.animals.get(i);
+                if (candidateAnimal.getName().equals(animal)) {
                     return i;
                 }
             }
