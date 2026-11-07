@@ -29,6 +29,14 @@ import woodland.Spells.Spell;
  * other operations.
  */
 public class Game {
+    private static final int ANIMAL_COUNT = 5;
+    private static final int SPELL_PLACEMENT_COUNT = 10;
+    private static final int UNICORN_ATTACK = 14;
+    private static final int CENTAUR_ATTACK = 36;
+    private static final int DRAGON_ATTACK = 29;
+    private static final int PHOENIX_ATTACK = 42;
+    private static final int SPHINX_ATTACK = 21;
+
     public String status = "";
     protected final int ROW = 20;
     protected final int COL = 20;
@@ -47,17 +55,6 @@ public class Game {
     boolean thisTurn = false;
     boolean nextTurn = false;
     static long seed;
-    private int zero = 0;
-    private int one = 1;
-    private int two = 2;
-    private int five = 5;
-    private int nineteen = 19;
-    private int ten = 10;
-    private int thirty6 = 36;
-    private int twenty9 = 29;
-    private int fortyTwo = 42;
-    private int twenty1 = 21;
-    private int fourteen = 14;
 
     /**
      * Initializes a new game with a specified random seed. This constructor sets up
@@ -86,8 +83,8 @@ public class Game {
         board = new Square[ROW][COL];
         gameOver = false;
 
-        for (int i = zero; i < ROW; i++) {
-            for (int j = zero; j < COL; j++) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
                 board[i][j] = new Square(i, j);
             }
         }
@@ -101,29 +98,29 @@ public class Game {
         animals.add(new Owl("Owl"));
         animals.add(new Badger("Badger"));
 
-        for (int i = zero; i < five; i++) {
+        for (int i = 0; i < ANIMAL_COUNT; i++) {
             int randomNumber = generator.nextInt(COL);
-            while (board[nineteen][randomNumber].hasAnimal()) {
+            while (board[ROW - 1][randomNumber].hasAnimal()) {
                 randomNumber = generator.nextInt(COL);
             }
-            board[nineteen][randomNumber].setAnimal(animals.get(i));
-            animals.get(i).setSquare(board[nineteen][randomNumber]);
-            board[nineteen][randomNumber].setVisible(true);
+            board[ROW - 1][randomNumber].setAnimal(animals.get(i));
+            animals.get(i).setSquare(board[ROW - 1][randomNumber]);
+            board[ROW - 1][randomNumber].setVisible(true);
             animals.get(i).setGame(this);
         }
 
         creatures = new ArrayList<Creature>();
-        creatures.add(new UnderAppreciatedUnicorn("Under Appreciated Unicorn", fourteen));
-        creatures.add(new ComplicatedCentaur("Complicated Centaur", thirty6));
-        creatures.add(new DeceptiveDragon("Deceptive Dragon", twenty9));
-        creatures.add(new PrecociousPhoenix("Precocious Phoenix", fortyTwo));
-        creatures.add(new SassySphinx("Sassy Sphinx", twenty1));
+        creatures.add(new UnderAppreciatedUnicorn("Under Appreciated Unicorn", UNICORN_ATTACK));
+        creatures.add(new ComplicatedCentaur("Complicated Centaur", CENTAUR_ATTACK));
+        creatures.add(new DeceptiveDragon("Deceptive Dragon", DRAGON_ATTACK));
+        creatures.add(new PrecociousPhoenix("Precocious Phoenix", PHOENIX_ATTACK));
+        creatures.add(new SassySphinx("Sassy Sphinx", SPHINX_ATTACK));
 
-        for (int i = zero; i < five; i++) {
-            int row = generator.nextInt(ROW - two) + one;
+        for (int i = 0; i < ANIMAL_COUNT; i++) {
+            int row = generator.nextInt(ROW - 2) + 1;
             int col = generator.nextInt(COL);
             while (board[row][col].hasCreature()) {
-                row = generator.nextInt(ROW - two) + one;
+                row = generator.nextInt(ROW - 2) + 1;
                 col = generator.nextInt(COL);
             }
             Square square = board[row][col];
@@ -138,13 +135,13 @@ public class Game {
         spells.add(Spell.CONFUSE);
         spells.add(Spell.CHARM);
 
-        for (int i = zero; i < ten; i++) {
-            int spellIndex = generator.nextInt(five);
-            int row = generator.nextInt(ROW - two) + one;
+        for (int i = 0; i < SPELL_PLACEMENT_COUNT; i++) {
+            int spellIndex = generator.nextInt(ANIMAL_COUNT);
+            int row = generator.nextInt(ROW - 2) + 1;
             int col = generator.nextInt(COL);
             while (board[row][col].hasCreature() 
             || board[row][col].hasSpell()) {
-                row = generator.nextInt(ROW - two) + one;
+                row = generator.nextInt(ROW - 2) + 1;
                 col = generator.nextInt(COL);
             }
             board[row][col].setSpell(spells.get(spellIndex));
@@ -239,15 +236,15 @@ public class Game {
      */
     public Square getNextSquareWithCreature(int oldRow, int oldCol, int newRow, int newCol) {
         if (oldCol != newCol) {
-            int colStep = (oldCol < newCol) ? one : -one;
+            int colStep = (oldCol < newCol) ? 1 : -1;
 
-            for (int col = oldCol + colStep; (colStep > zero) ? col <= newCol : col >= newCol; col += colStep) {
+            for (int col = oldCol + colStep; (colStep > 0) ? col <= newCol : col >= newCol; col += colStep) {
                 if (this.getSquare(newRow, col).hasCreature()) {
                     return board[newRow][col];
                 }
             }
         } else {
-            for (int row = oldRow + one; row <= newRow; row++) {
+            for (int row = oldRow + 1; row <= newRow; row++) {
                 if (this.getSquare(row, newCol).hasCreature()) {
                     return board[row][newCol];
                 }
@@ -307,7 +304,7 @@ public class Game {
         int currentCol = currentSquare.col;
         if (animals.get(currentAnimalIndex).equals(animal)) {
             currentAnimalUsedSpell = true;
-        } else if (animals.get(currentAnimalIndex + one).equals(animal)) {
+        } else if (animals.get(currentAnimalIndex + 1).equals(animal)) {
             nextAnimalUsedSpell = true;
         }
 
@@ -321,8 +318,8 @@ public class Game {
                 break;
 
             case CHARM:
-                for (int i = currentRow - one; i <= currentRow + one; i++) {
-                    for (int j = currentCol - one; j <= currentCol + one; j++) {
+                for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+                    for (int j = currentCol - 1; j <= currentCol + 1; j++) {
                         if (i != currentRow && j != currentCol) {
                             if (board[i][j].hasCreature()) {
                                 board[i][j].getCreature().addCharmAnimal(animal);
@@ -335,8 +332,8 @@ public class Game {
                 break;
 
             case CONFUSE:
-                for (int i = currentRow - one; i <= currentRow + one; i++) {
-                    for (int j = currentCol - one; j <= currentCol + one; j++) {
+                for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+                    for (int j = currentCol - 1; j <= currentCol + 1; j++) {
                         if (i != currentRow && j != currentCol) {
                             if (board[i][j].hasCreature()) {
                                 board[i][j].getCreature().setConfused(true);
@@ -350,10 +347,10 @@ public class Game {
                 break;
 
             case DETECT:
-                for (int i = currentRow - one; i <= currentRow + one; i++) {
-                    for (int j = currentCol - one; j <= currentCol + one; j++) {
-                        int variableI = Math.min((Math.max(i, zero)), nineteen);
-                        int variableJ = Math.min((Math.max(j, zero)), nineteen);
+                for (int i = currentRow - 1; i <= currentRow + 1; i++) {
+                    for (int j = currentCol - 1; j <= currentCol + 1; j++) {
+                        int variableI = Math.min(Math.max(i, 0), ROW - 1);
+                        int variableJ = Math.min(Math.max(j, 0), COL - 1);
                         board[variableI][variableJ].reveal();
                     }
                 }
@@ -410,7 +407,7 @@ public class Game {
      * @return the name of the next animal.
      */
     public String getNextAnimalName() {
-        return animals.get((currentAnimalIndex + one) % five).getName();
+        return animals.get((currentAnimalIndex + 1) % ANIMAL_COUNT).getName();
     }
 
     /**
@@ -422,16 +419,16 @@ public class Game {
      */
     public void updateCurrentAnimalIndex() {
         lastAnimalIndex = currentAnimalIndex;
-        currentAnimalIndex = (currentAnimalIndex + one) % five;
+        currentAnimalIndex = (currentAnimalIndex + 1) % ANIMAL_COUNT;
 
-        if (animals.get((lastAnimalIndex + one) % five).getName().equals(animals.get(currentAnimalIndex).getName())) {
-            currentAnimalIndex = (currentAnimalIndex) % five;
+        if (animals.get((lastAnimalIndex + 1) % ANIMAL_COUNT).getName().equals(animals.get(currentAnimalIndex).getName())) {
+            currentAnimalIndex = (currentAnimalIndex) % ANIMAL_COUNT;
         } else if (nextTurn) {
-            currentAnimalIndex = (currentAnimalIndex + one) % five;
+            currentAnimalIndex = (currentAnimalIndex + 1) % ANIMAL_COUNT;
         } else if (currentAnimalUsedSpell) {
-            currentAnimalIndex = (currentAnimalIndex) % five;
+            currentAnimalIndex = (currentAnimalIndex) % ANIMAL_COUNT;
         } else if (nextAnimalUsedSpell) {
-            currentAnimalIndex = (currentAnimalIndex + one) % five;
+            currentAnimalIndex = (currentAnimalIndex + 1) % ANIMAL_COUNT;
         }
         hasMoved = false;
     }
@@ -449,9 +446,9 @@ public class Game {
      */
     public JsonArray toJson() {
         JsonArrayBuilder boardRow = Json.createArrayBuilder();
-        for (int i = zero; i < ROW; i++) {
+        for (int i = 0; i < ROW; i++) {
             JsonArrayBuilder boardCol = Json.createArrayBuilder();
-            for (int j = zero; j < COL; j++) {
+            for (int j = 0; j < COL; j++) {
                 JsonArrayBuilder boardContents = Json.createArrayBuilder();
                 if (getSquare(i, j).isVisible()) {
                     if (getSquare(i, j).getAnimal() != null) {
