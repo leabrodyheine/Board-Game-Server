@@ -52,10 +52,10 @@ public class GameServer {
      * @param port The port number on which the server will listen for connections.
      */
     public void runServer(int port) {
-        try (ServerSocket ss = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (!game.gameOver()) {
-                Socket conn = ss.accept();
-                clientRequest(conn);
+                Socket clientSocket = serverSocket.accept();
+                clientRequest(clientSocket);
             }
         } catch (IOException | IllegalArgumentException e) {
             e.printStackTrace();
