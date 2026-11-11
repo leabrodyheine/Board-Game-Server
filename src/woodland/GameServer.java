@@ -195,11 +195,11 @@ public class GameServer {
     public void clientRequest(Socket clientSocket) {
         PrintWriter out = null;
         try {
-            InputStreamReader isr = new InputStreamReader(clientSocket.getInputStream());
-            BufferedReader in = new BufferedReader(isr);
+            InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
+            BufferedReader requestReader = new BufferedReader(inputStreamReader);
             out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            String line = in.readLine();
+            String line = requestReader.readLine();
             int contentLength = 0;
             String body = "";
 
@@ -216,12 +216,12 @@ public class GameServer {
                     contentLength = 0;
                     break;
                 }
-                line = in.readLine();
+                line = requestReader.readLine();
             }
 
             if (contentLength > -1) {
                 char[] bodyChars = new char[contentLength];
-                in.read(bodyChars, 0, contentLength);
+                requestReader.read(bodyChars, 0, contentLength);
                 body = new String(bodyChars);
             }
 
@@ -251,14 +251,14 @@ public class GameServer {
                         int animalIndex = getAnimalIndex(body);
 
                         if (actionType.equals("move")) {
-                            boolean parseMove = parseMoveAction(body, animalIndex);
-                            if (!parseMove) {
+                            boolean moveSucceeded = parseMoveAction(body, animalIndex);
+                            if (!moveSucceeded) {
                                 String responseBody = getGameStateAsJson().toString();
                                 String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                                 out.print(headers + responseBody);
                                 out.flush();
                                 return;
-                            } else if (parseMove) {
+                            } else if (moveSucceeded) {
                                 String responseBody = getGameStateAsJson().toString();
                                 String headers = stringHeaders(out, HTTP_OK, responseBody.length());
                                 out.print(headers + responseBody);
