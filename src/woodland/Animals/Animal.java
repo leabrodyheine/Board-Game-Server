@@ -17,6 +17,10 @@ import woodland.Game;
  */
 public class Animal {
 
+    private static final int BOARD_MAX_INDEX = 19;
+    private static final int INITIAL_LIFE_POINTS = 100;
+    private static final int HEAL_AMOUNT = 10;
+
     private String name;
     protected Map<Spell, Integer> spells = new HashMap<>();
     protected int lifePoints;
@@ -26,11 +30,6 @@ public class Animal {
     private Square square;
     protected Game game;
     protected boolean shielded = false;
-    private int zero = 0;
-    private int one = 1;
-    private int nineteen = 19;
-    private int hundred = 100;
-    private int ten = 10;
 
     /**
      * Constructs an Animal instance with a specified name. Sets initial life points
@@ -41,7 +40,7 @@ public class Animal {
      */
     public Animal(String name) {
         this.name = name;
-        lifePoints = hundred;
+        lifePoints = INITIAL_LIFE_POINTS;
         animalIdentifier.put(name.hashCode(), this);
     }
 
@@ -93,10 +92,11 @@ public class Animal {
      */
 
     public boolean validMove(int oldRow, int oldCol, int newRow, int newCol) {
-        if (newRow <= nineteen && newCol <= nineteen) {
+        if (newRow <= BOARD_MAX_INDEX && newCol <= BOARD_MAX_INDEX) {
             if (game.getSquare(newRow, newCol).hasAnimal()) {
                 return false;
-            } else if ((newRow < zero && newRow > nineteen) || (newCol > nineteen && newCol < zero)) {
+            } else if ((newRow < 0 && newRow > BOARD_MAX_INDEX)
+                    || (newCol > BOARD_MAX_INDEX && newCol < 0)) {
                 game.setStatus("The last move was invalid.");
                 return false;
             } else {
@@ -130,7 +130,7 @@ public class Animal {
      * Heals the animal, increasing its life points by 10.
      */
     public void heal() {
-        lifePoints += ten;
+        lifePoints += HEAL_AMOUNT;
     }
 
     /**
@@ -148,7 +148,7 @@ public class Animal {
      * @return true if the animal has life points greater than 0, false otherwise.
      */
     public boolean isAlive() {
-        if (lifePoints <= zero) {
+        if (lifePoints <= 0) {
             return false;
         }
         return true;
@@ -163,9 +163,9 @@ public class Animal {
     public void addSpell(Spell spell) {
         if (spells.containsKey(spell)) {
             int value = spells.get(spell);
-            spells.put(spell, value + one);
+            spells.put(spell, value + 1);
         } else {
-            spells.put(spell, one);
+            spells.put(spell, 1);
         }
     }
 
@@ -179,8 +179,8 @@ public class Animal {
     public void updateSpell(Spell spell) {
         if (spells.containsKey(spell)) {
             int value = spells.get(spell);
-            spells.put(spell, value - one);
-            if (value - one == zero) {
+            spells.put(spell, value - 1);
+            if (value - 1 == 0) {
                 spells.remove(spell);
             }
         }
@@ -255,13 +255,13 @@ public class Animal {
      */
     protected boolean animalInPath(int oldRow, int oldCol, int newRow, int newCol) {
         if (oldCol != newCol) {
-            for (int col = oldCol + one; col <= newCol; col++) {
+            for (int col = oldCol + 1; col <= newCol; col++) {
                 if (this.game.getSquare(newRow, col).hasAnimal()) {
                     return true;
                 }
             }
         } else {
-            for (int row = oldRow + one; row <= newRow; row++) {
+            for (int row = oldRow + 1; row <= newRow; row++) {
                 if (this.game.getSquare(row, newCol).hasAnimal()) {
                     return true;
                 }
@@ -286,13 +286,13 @@ public class Animal {
      */
     public boolean creatureInPath(int oldRow, int oldCol, int newRow, int newCol) {
         if (oldCol != newCol) {
-            for (int col = oldCol + one; col <= newCol; col++) {
+            for (int col = oldCol + 1; col <= newCol; col++) {
                 if (this.game.getSquare(newRow, col).hasCreature()) {
                     return true;
                 }
             }
         } else {
-            for (int row = oldRow + one; row <= newRow; row++) {
+            for (int row = oldRow + 1; row <= newRow; row++) {
                 if (this.game.getSquare(row, newCol).hasCreature()) {
                     return true;
                 }
