@@ -11,10 +11,9 @@ import woodland.Moveables.Digable;
  * basic attributes and methods.
  */
 public class Badger extends Animal implements Digable {
-    private int hundred = 100;
-    private int one = 1;
-    private int two = 2;
-    private int zero = 0;
+    private static final int INITIAL_LIFE_POINTS = 100;
+    private static final int MAX_DIG_DISTANCE = 2;
+    private static final int MAX_ADJACENT_DISTANCE = 1;
 
     /**
      * Constructs a new Badger with the specified name. The Badger's life points are
@@ -24,7 +23,7 @@ public class Badger extends Animal implements Digable {
      */
     public Badger(String name) {
         super(name);
-        setLifePoints(hundred);
+        setLifePoints(INITIAL_LIFE_POINTS);
         setDescription(
                 "The badger has a black and white face. The badger is a often mistaken for a very small panda. The badger wears a t-shirt that says “I am not a panda” to combat this. ");
     }
@@ -67,9 +66,10 @@ public class Badger extends Animal implements Digable {
     public boolean dig(int oldRow, int oldCol, int newRow, int newCol) {
         int rowDiff = Math.abs(newRow - oldRow);
         int colDiff = Math.abs(newCol - oldCol);
-        return ((rowDiff == two && colDiff == two) || (rowDiff == zero && colDiff == two)
-                || (rowDiff == two && colDiff == zero)
-                || (rowDiff <= one && colDiff <= one));
+        return ((rowDiff == MAX_DIG_DISTANCE && colDiff == MAX_DIG_DISTANCE)
+                || (rowDiff == 0 && colDiff == MAX_DIG_DISTANCE)
+                || (rowDiff == MAX_DIG_DISTANCE && colDiff == 0)
+                || (rowDiff <= MAX_ADJACENT_DISTANCE && colDiff <= MAX_ADJACENT_DISTANCE));
     }
 
     /**
