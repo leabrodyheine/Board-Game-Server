@@ -6,7 +6,7 @@ package woodland.Creatures;
  * universe and its precocious nature.
  */
 public class PrecociousPhoenix extends Creature {
-    private int fortyTwo = 42;
+    private static final int ATTACK_VALUE = 42;
 
     /**
      * Constructor for initializing a PrecociousPhoenix.
@@ -19,7 +19,7 @@ public class PrecociousPhoenix extends Creature {
         setName("Precocious Phoenix");
         setDescription(
                 "The PP is a phoenix that is very precocious. The phoenix understands the meaning of life and the universe");
-        setAttackValue(fortyTwo);
+        setAttackValue(ATTACK_VALUE);
         setShortName("PP");
     }
 }

@@ -5,7 +5,7 @@ package woodland.Creatures;
  * The ComplicatedCentaur is a special type of Creature with unique attributes.
  */
 public class ComplicatedCentaur extends Creature {
-    private int thirty6 = 36;
+    private static final int ATTACK_VALUE = 36;
 
     /**
      * Constructs a new ComplicatedCentaur with the specified name and attack value.
@@ -19,7 +19,7 @@ public class ComplicatedCentaur extends Creature {
         setName("Complicated Centaur");
         setDescription(
                 "The CC is a centaur that has mixed feelings about its love interest, a horse. The centaur is unsure whether they can love them fully.");
-        setAttackValue(thirty6);
+        setAttackValue(ATTACK_VALUE);
         setShortName("CC");
     }
 }

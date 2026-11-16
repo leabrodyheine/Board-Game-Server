@@ -6,7 +6,7 @@ package woodland.Creatures;
  * social engineering tactics.
  */
 public class DeceptiveDragon extends Creature {
-    private int twenty9 = 29;
+    private static final int ATTACK_VALUE = 29;
 
     /**
      * Constructor for initializing a DeceptiveDragon.
@@ -20,6 +20,6 @@ public class DeceptiveDragon extends Creature {
         setDescription(
                 "The DD is a dragon that practices social engineering. The dragon is very good at sending phishing emails pretending to be a prince");
         setShortName("DD");
-        setAttackValue(twenty9);
+        setAttackValue(ATTACK_VALUE);
     }
 }

@@ -8,7 +8,7 @@ package woodland.Creatures;
  * methods.
  */
 public class SassySphinx extends Creature {
-    private int twenty1 = 21;
+    private static final int ATTACK_VALUE = 21;
 
     /**
      * Constructs a new instance of SassySphinx with the provided name and attack
@@ -22,7 +22,7 @@ public class SassySphinx extends Creature {
         setName("Sassy Sphinx");
         setDescription(
                 "The SS is a sphinx that is very sassy. The sphinx is very good at giving sarcastic answers to questions");
-        setAttackValue(twenty1);
+        setAttackValue(ATTACK_VALUE);
         setShortName("SS");
     }
 }

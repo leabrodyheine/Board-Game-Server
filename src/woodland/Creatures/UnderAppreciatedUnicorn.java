@@ -9,7 +9,7 @@ package woodland.Creatures;
  * behaviors.
  */
 public class UnderAppreciatedUnicorn extends Creature {
-    private int fourteen = 14;
+    private static final int ATTACK_VALUE = 14;
 
     /**
      * Constructs a new instance of the UnderAppreciatedUnicorn with a specified
@@ -23,7 +23,7 @@ public class UnderAppreciatedUnicorn extends Creature {
         setName("Under-appreciated Unicorn");
         setDescription(
                 "The UU is a unicorn that is under-appreciated by the other mythical creatures because it is often mistaken for a horse with a horn");
-        setAttackValue(fourteen);
+        setAttackValue(ATTACK_VALUE);
         setShortName("UU");
     }
 }
