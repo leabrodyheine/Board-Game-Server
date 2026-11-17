@@ -8,9 +8,9 @@ import woodland.Moveables.LongJumpable;
  * LongJumpable interface.
  */
 public class Fox extends Animal implements LongJumpable {
-    private int hundred = 100;
-    private int three = 3;
-    private int zero = 0;
+    private static final int INITIAL_LIFE_POINTS = 100;
+    private static final int MAX_JUMP_DISTANCE = 3;
+
     /**
      * Constructs a new Fox with the specified name.
      * Initializes its life points and sets a description.
@@ -19,7 +19,7 @@ public class Fox extends Animal implements LongJumpable {
      */
     public Fox(String name) {
         super(name);
-        setLifePoints(hundred);
+        setLifePoints(INITIAL_LIFE_POINTS);
         setDescription("The fox has a bushy tail. The fox really enjoys looking at butterflies in the sunlight.");
     }
 
@@ -38,7 +38,8 @@ public class Fox extends Animal implements LongJumpable {
     public boolean jump(int oldRow, int oldCol, int newRow, int newCol) {
         int rowDiff = Math.abs(newRow - oldRow);
         int colDiff = Math.abs(newCol - oldCol);
-        return (rowDiff <= three && colDiff == zero) || (rowDiff == zero && colDiff <= three);
+        return (rowDiff <= MAX_JUMP_DISTANCE && colDiff == 0)
+                || (rowDiff == 0 && colDiff <= MAX_JUMP_DISTANCE);
     }
 
     @Override

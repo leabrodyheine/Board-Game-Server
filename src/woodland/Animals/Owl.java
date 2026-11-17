@@ -8,8 +8,8 @@ import woodland.Moveables.Flyable;
  * interface.
  */
 public class Owl extends Animal implements Flyable {
-    private int hundred = 100;
-    private int one = 1;
+    private static final int INITIAL_LIFE_POINTS = 100;
+    private static final int DIAGONAL_FLIGHT_DISTANCE = 1;
 
     /**
      * Constructs a new Owl with the specified name.
@@ -19,7 +19,7 @@ public class Owl extends Animal implements Flyable {
      */
     public Owl(String name) {
         super(name);
-        setLifePoints(hundred);
+        setLifePoints(INITIAL_LIFE_POINTS);
         setDescription("The owl has wings. The owl has prescription contact lenses but cannot put them on.");
     }
 
@@ -70,7 +70,8 @@ public class Owl extends Animal implements Flyable {
     public boolean fly(int oldRow, int oldCol, int newRow, int newCol) {
         int rowDiff = Math.abs(newRow - oldRow);
         int colDiff = Math.abs(newCol - oldCol);
-        if (oldRow == newRow || newCol == oldCol || (rowDiff == one && colDiff == one)) {
+        if (oldRow == newRow || newCol == oldCol
+                || (rowDiff == DIAGONAL_FLIGHT_DISTANCE && colDiff == DIAGONAL_FLIGHT_DISTANCE)) {
             return true;
         } else {
             return false;

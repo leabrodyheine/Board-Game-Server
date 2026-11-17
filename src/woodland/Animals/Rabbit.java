@@ -8,10 +8,9 @@ import woodland.Moveables.ShortJumpable;
  * ShortJumpable interface.
  */
 public class Rabbit extends Animal implements ShortJumpable {
-    private int hundred = 100;
-    private int two = 2;
-    private int zero = 0;
-    private int one = 1;
+    private static final int INITIAL_LIFE_POINTS = 100;
+    private static final int MAX_JUMP_DISTANCE = 2;
+    private static final int DIAGONAL_JUMP_DISTANCE = 1;
 
     /**
      * Constructs a new Rabbit with the specified name.
@@ -21,7 +20,7 @@ public class Rabbit extends Animal implements ShortJumpable {
      */
     public Rabbit(String name) {
         super(name);
-        setLifePoints(hundred);
+        setLifePoints(INITIAL_LIFE_POINTS);
         setDescription("The rabbit has fluffy ears and tail. The rabbit really likes to eat grass.");
     }
 
@@ -40,8 +39,9 @@ public class Rabbit extends Animal implements ShortJumpable {
     public boolean jump(int oldRow, int oldCol, int newRow, int newCol) {
         int rowDiff = Math.abs(newRow - oldRow);
         int colDiff = Math.abs(newCol - oldCol);
-        return (rowDiff <= two && colDiff == zero) || (rowDiff == zero && colDiff <= two)
-                || (rowDiff == one && colDiff == one);
+        return (rowDiff <= MAX_JUMP_DISTANCE && colDiff == 0)
+                || (rowDiff == 0 && colDiff <= MAX_JUMP_DISTANCE)
+                || (rowDiff == DIAGONAL_JUMP_DISTANCE && colDiff == DIAGONAL_JUMP_DISTANCE);
     }
 
     /**
